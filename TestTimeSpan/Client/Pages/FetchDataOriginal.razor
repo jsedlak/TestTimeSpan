@@ -1,4 +1,4 @@
-@page "/fetchdata"
+@page "/fetchdataoriginal"
 @using TestTimeSpan.Shared
 @inject HttpClient Http
 
@@ -42,13 +42,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetAsync("WeatherForecast");
-        var data = await result.Content.ReadAsStringAsync();
-        
-        var options = new System.Text.Json.JsonSerializerOptions();
-        options.Converters.Add(new TimeSpanConverter());
-
-        forecasts = System.Text.Json.JsonSerializer.Deserialize<WeatherForecast[]>(data, options);
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
     }
 
 }
